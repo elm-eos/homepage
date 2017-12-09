@@ -1,0 +1,6 @@
+build
+dist
+elm-stuff
+node_modules
+yarn.lock
+package-lock.json
