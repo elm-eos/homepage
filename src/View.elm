@@ -1,143 +1,96 @@
-module View exposing (view)
+module View exposing (..)
 
-import Css exposing (..)
-import EveryDict exposing (EveryDict)
-import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (css, href)
-import Html.Styled.Events exposing (onWithOptions)
-import Json.Decode as Decode
+import Css
+import Css.Foreign
+import Html.Styled as Html exposing (Html)
+import Html.Styled.Attributes as HtmlAttr
+import Html.Styled.Events as HtmlEvt
 import Model exposing (..)
-import Page.ApiEndpoint
-import Route exposing (Route(..))
+import Route
 import State exposing (Msg(..))
-import Svg exposing (path, svg)
-import Svg.Attributes as SvgAttr
+import Style
+import Svg.Styled as Svg
+import Svg.Styled.Attributes as SvgAttr
 
 
-view : Model -> Html Msg
-view model =
-    div
-        [ css
-            [ fontFamilies [ "sans-serif" ]
-            , displayFlex
+container : Model -> List (Html Msg) -> Html Msg
+container model innerHtml =
+    Html.div
+        [ HtmlAttr.css
+            [ Style.backgroundColor model.theme
+            , Style.foregroundColor model.theme
+            , Style.fontFamilies model.theme
+            , Css.height <| Css.pct 100
+            , Css.overflow Css.auto
+            , Css.displayFlex
+            , Css.flexDirection Css.row
             ]
         ]
-        [ sidebarView model
-        , contentView model
-        ]
-
-
-sidebarView : Model -> Html Msg
-sidebarView model =
-    aside
-        [ css
-            [ flexBasis <| px 300
-            , flexGrow zero
-            , flexShrink zero
+        [ Css.Foreign.global
+            [ Css.Foreign.selector "*"
+                [ Css.boxSizing Css.borderBox
+                ]
+            , Css.Foreign.selector "body"
+                [ Css.margin Css.zero
+                , Css.padding Css.zero
+                , Css.height <| Css.vh 100
+                ]
             ]
-        ]
-        [ elmEosLogoView
-        , linkGroupView model.route
-            "chain"
-            [ ( "get_info", ApiEndpoint "v1" "chain" "get_info" )
-            , ( "get_block", ApiEndpoint "v1" "chain" "get_block" )
+        , sidebar model
+        , Html.main_
+            [ HtmlAttr.css
+                [ Css.flex <| Css.int 1 ]
             ]
+            innerHtml
         ]
 
 
-linkGroupView : Route -> String -> List ( String, Route ) -> Html Msg
-linkGroupView currentRoute title links =
-    div []
-        [ h3 [] [ text title ]
-        , nav [] <|
-            List.map (linkView currentRoute) links
+sidebar : Model -> Html Msg
+sidebar model =
+    Html.aside []
+        [ logo model.theme
+        , title
         ]
 
 
-linkView : Route -> ( String, Route ) -> Html Msg
-linkView currentRoute ( label, newRoute ) =
-    a
-        [ goTo newRoute
-        , href <| Route.print newRoute
-        , css
-            [ textDecoration none ]
+title : Html Msg
+title =
+    Html.div
+        [ HtmlAttr.css
+            [ Css.fontWeight Css.bold ]
         ]
-        [ text label ]
+        [ Html.text "ELM-EOS" ]
 
 
-
--- apiLinksView : Model -> Html Msg
--- apiLinksView model =
---     nav
---         [ css
---             [ displayFlex
---             , flexDirection column
---             , fontFamilies [ "monospace" ]
---             ]
---         ]
---     <|
---         List.map (apiPluginLinksView model) <|
---             List.sortBy (Tuple.first >> Basics.toString) <|
---                 EveryDict.toList apiEndpointsDict
--- apiPluginLinksView : Model -> ( ApiPlugin, List ApiEndpoint ) -> Html Msg
--- apiPluginLinksView model ( apiPlugin, apiEndpoints ) =
---     li []
---         [ strong [] [ text <| apiPluginToString apiPlugin ]
---         , ul [] <|
---             List.map (apiEndpointLinkView model) <|
---                 List.sortBy .path <|
---                     apiEndpoints
---         ]
--- apiEndpointLinkView : Model -> ApiEndpoint -> Html Msg
--- apiEndpointLinkView model apiEndpoint =
---     let
---         route =
---             Route.ApiEndpoint
---                 (apiVersionToString apiEndpoint.version)
---                 (apiPluginToString apiEndpoint.plugin)
---                 apiEndpoint.path
---     in
---     li []
---         [ a
---             [ goTo route
---             , href <| Route.print route
---             , css
---                 [ textDecoration none ]
---             ]
---             [ text apiEndpoint.path
---             ]
---         ]
-
-
-elmEosLogoView : Html Msg
-elmEosLogoView =
-    fromUnstyled <|
-        svg
-            [ SvgAttr.width "227"
-            , SvgAttr.height "227"
-            , SvgAttr.viewBox "0 0 227 227"
+logo : Style.Theme -> Html Msg
+logo theme =
+    let
+        polygonPoints =
+            [ "25.7,71.2 25.6,71.3 1.8,174.6 38,112 "
+            , "87.8,179 108,112.1 73.6,52.5 39.1,112.1 59.3,179 "
+            , "1.1,177.9 0.8,179 58.2,179 38.4,113.3 "
+            , "0.6,180 0.6,180.1 72.3,225.7 58.5,180 "
+            , "121.4,71.2 121.5,71.3 145.2,174.6 109.1,112 "
+            , "146,177.9 146.2,179 88.8,179 108.7,113.3 "
+            , "87.5,180 73.6,226 59.6,180 "
+            , "146.4,180 146.5,180.1 74.7,225.7 88.5,180 "
+            , "73,1.6 26.4,70.1 38.7,110.8 73,51.3 "
+            , "74,1.6 74,51.3 108.4,110.8 120.6,70.1 "
             ]
-            [ path
-                [ SvgAttr.d "M197.356 177.182L169.76 71.209a5.52 5.52 0 0 0-.942-1.938l-50.901-67.08a5.548 5.548 0 0 0-8.814-.024L57.588 69.245a5.481 5.481 0 0 0-.968 1.994L29.635 177.21a5.502 5.502 0 0 0 2.679 6.172l78.498 43.403a5.563 5.563 0 0 0 5.375 0l78.499-43.403a5.503 5.503 0 0 0 2.67-6.2zm-19.644-31.527l-21.038-33.234 7.018-20.596 14.02 53.83zM119.035 21.952l39.184 51.635-9.145 26.831-30.039-47.455V21.952zm-5.535 42.94l30.995 48.963-20.172 59.198h-21.839v-.003l-20.262-58.748 31.278-49.41zm-5.535-43.097v31.167L77.607 100.92l-9.423-27.326 39.781-51.799zM62.784 91.88l7.247 21.01h-.001l-21.072 33.289L62.784 91.88zm11.861 34.392l16.134 46.78H45.032l29.613-46.78zm-18.273 57.803h38.21l9.001 26.102-47.211-26.102zm57.097 20.83l-7.185-20.83h14.283l-7.098 20.83zm9.881 5.309l8.908-26.139h38.371l-47.279 26.139zm12.665-37.161l16.08-47.192 29.872 47.192h-45.952z" ]
+
+        toPolygon pts =
+            Svg.polygon
+                [ SvgAttr.points pts
+                , SvgAttr.fill "#ffffff"
+                , SvgAttr.css [ Css.opacity <| Css.num 0.8 ]
+                ]
                 []
-            ]
-
-
-contentView : Model -> Html Msg
-contentView model =
-    main_ [] <|
-        case model.route of
-            Route.ApiEndpoint version plugin endpoint ->
-                [ Page.ApiEndpoint.view version plugin endpoint model ]
-
-            _ ->
-                [ text <| Basics.toString model.route ]
-
-
-goTo : Route -> Attribute Msg
-goTo route =
-    onWithOptions "click"
-        { stopPropagation = False
-        , preventDefault = True
-        }
-        (Decode.succeed <| GoTo route)
+    in
+    Svg.svg
+        [ SvgAttr.version "1.2"
+        , SvgAttr.baseProfile "tiny"
+        , SvgAttr.viewBox "0 0 147 227.8"
+        , SvgAttr.css [ Css.width <| Css.px 150 ]
+        ]
+    <|
+        List.map toPolygon polygonPoints

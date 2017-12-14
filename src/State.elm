@@ -1,24 +1,25 @@
 module State exposing (..)
 
 import Dict
-import Eos
-import Eos.Chain
-import Form exposing (Form)
-import Form.Validate exposing (Validation)
-import Forms exposing (Forms)
-import Json.Encode exposing (Value)
+import Elm.Documentation exposing (Documentation)
+import Eosc
+import Http
+import Json.Decode as Decode
+import Json.Encode as Encode exposing (Value)
 import Model exposing (..)
 import Navigation
+import RemoteData exposing (RemoteData)
 import Route exposing (Route)
-import Task exposing (Task)
+import Task
 
 
 type Msg
     = NoOp
     | UrlChange Navigation.Location
     | GoTo Route
-    | FormInput Forms.Id (Validation Forms.Error (Task Eos.Error Value)) Form.Msg
-    | TaskResult Forms.Id (Result Eos.Error Value)
+    | DocsMsg (Result Http.Error (List Documentation))
+    | SetQuery String
+    | EoscResult (Result Eosc.Error Value)
 
 
 init : Navigation.Location -> ( Model, Cmd Msg )
@@ -30,24 +31,18 @@ init location =
         route =
             Route.parse location
 
-        baseUrl =
-            Eos.baseUrl "http://127.0.0.1:8888"
+        ( query, maybeCmd ) =
+            searchQueryAndCmd route model.query
 
-        attempt =
-            Task.attempt
-                (\result ->
-                    let
-                        _ =
-                            Debug.log "Result" result
-                    in
-                    NoOp
-                )
+        eoscResult =
+            if maybeCmd == Nothing then
+                model.eoscResult
+            else
+                RemoteData.Loading
     in
-    { model | route = route }
-        ! [ Eos.Chain.getInfo baseUrl |> attempt
-          , 1 |> Eos.blockNum |> Eos.Chain.getBlock baseUrl |> attempt
-          , "eos" |> Eos.accountName |> Eos.Chain.getAccount baseUrl |> attempt
-          , "eos" |> Eos.accountName |> Eos.Chain.getCode baseUrl |> attempt
+    { model | route = route, query = query, eoscResult = eoscResult }
+        ! [ fetchDocs "core"
+          , maybeCmd |> Maybe.withDefault Cmd.none
           ]
 
 
@@ -61,32 +56,90 @@ update msg model =
             { model | route = Route.parse location } ! []
 
         GoTo route ->
-            model ! [ Navigation.newUrl <| Route.print route ]
-
-        FormInput id validate formMsg ->
             let
-                form =
-                    model.forms
-                        |> Dict.get id
-                        |> Maybe.withDefault (Form.initial [] validate)
+                ( query, maybeCmd ) =
+                    searchQueryAndCmd route model.query
+
+                eoscResult =
+                    if maybeCmd == Nothing then
+                        model.eoscResult
+                    else
+                        RemoteData.Loading
             in
-            case ( formMsg, Form.getOutput form ) of
-                ( Form.Submit, Just task ) ->
-                    model ! [ Task.attempt (TaskResult id) task ]
+            { model
+                | query = query
+                , eoscResult = eoscResult
+            }
+                ! [ Navigation.newUrl <| Route.print route
+                  , maybeCmd |> Maybe.withDefault Cmd.none
+                  ]
 
-                _ ->
-                    { model
-                        | forms =
-                            Forms.insert id
-                                (Form.update validate formMsg form)
-                                model.forms
-                    }
-                        ! []
+        DocsMsg (Ok newDocs) ->
+            let
+                docs =
+                    Dict.union
+                        (newDocs |> List.map (\d -> ( d.name, d )) |> Dict.fromList)
+                        model.docs
+            in
+            { model | docs = docs } ! []
 
-        TaskResult id output ->
-            { model | output = Dict.insert id output model.output } ! []
+        DocsMsg (Err err) ->
+            let
+                _ =
+                    Debug.log "Error fetching documentation" err
+            in
+            model ! []
+
+        SetQuery query ->
+            { model | query = query } ! []
+
+        EoscResult eoscResult ->
+            { model
+                | eoscResult =
+                    case eoscResult of
+                        Ok value ->
+                            RemoteData.Success value
+
+                        Err err ->
+                            RemoteData.Failure err
+            }
+                ! []
 
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
     Sub.none
+
+
+
+-- INTERNAL
+
+
+fetchDocs : String -> Cmd Msg
+fetchDocs packageName =
+    Http.send DocsMsg <|
+        Http.get ("/docs/" ++ packageName ++ ".json") <|
+            Decode.list Elm.Documentation.decoder
+
+
+searchQueryAndCmd : Route -> String -> ( String, Maybe (Cmd Msg) )
+searchQueryAndCmd route currentQuery =
+    case route of
+        Route.Search q ->
+            ( q, eoscResultCmd q )
+
+        _ ->
+            ( currentQuery, Nothing )
+
+
+eoscResultCmd : String -> Maybe (Cmd Msg)
+eoscResultCmd query =
+    if String.startsWith "eosc" query then
+        query
+            |> String.dropLeft 4
+            |> String.trim
+            |> Eosc.run
+            |> Task.attempt EoscResult
+            |> Just
+    else
+        Nothing

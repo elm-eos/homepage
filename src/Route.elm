@@ -6,54 +6,45 @@ import UrlParser as Url exposing (..)
 
 type Route
     = Loading
-    | Home
-    | ApiVersion String
-    | ApiPlugin String String
-    | ApiEndpoint String String String
-    | InvalidRoute (Maybe Navigation.Location)
+    | Search String
+    | Roadmap
+    | Error404 Navigation.Location
 
 
 print : Route -> String
 print route =
     case route of
-        Home ->
-            "#/"
+        Loading ->
+            "/"
 
-        ApiVersion version ->
-            "#/" ++ version
+        Search query ->
+            if String.length query > 0 then
+                "/?q=" ++ query
+            else
+                "/"
 
-        ApiPlugin version plugin ->
-            "#/" ++ version ++ "/" ++ plugin
+        Roadmap ->
+            "/roadmap"
 
-        ApiEndpoint version plugin endpoint ->
-            "#/" ++ version ++ "/" ++ plugin ++ "/" ++ endpoint
-
-        _ ->
-            "#/?"
+        Error404 location ->
+            "/" ++ Debug.log "404 PATH NAME" location.pathname
 
 
 parser : Navigation.Location -> Parser (Route -> a) a
 parser location =
     oneOf
-        [ map Home top
-        , map (ApiVersion "v1") <| s "v1"
-        , map (ApiPlugin "v1") <| s "v1" </> string
-        , map (ApiEndpoint "v1") <| s "v1" </> string </> string
+        [ map (Search << Maybe.withDefault "") <| top <?> stringParam "q"
+        , map Roadmap <| s "roadmap"
         ]
 
 
 parse : Navigation.Location -> Route
 parse location =
     location
-        |> Url.parseHash (parser location)
-        |> Maybe.withDefault (InvalidRoute <| Just location)
+        |> Url.parsePath (parser location)
+        |> Maybe.withDefault (Error404 location)
 
 
 isEqual : Route -> Route -> Bool
 isEqual route1 route2 =
-    case ( route1, route2 ) of
-        ( Home, Home ) ->
-            True
-
-        _ ->
-            False
+    Basics.toString route1 == Basics.toString route2

@@ -1,24 +1,29 @@
 module Model exposing (..)
 
 import Dict exposing (Dict)
-import Eos
-import Forms exposing (Forms)
-import Json.Decode exposing (Value)
+import Elm.Documentation exposing (Documentation)
+import Eosc
+import Http
+import Json.Encode exposing (Value)
+import RemoteData exposing (RemoteData(NotAsked))
 import Route exposing (Route)
+import Style
 
 
 type alias Model =
     { route : Route
-    , baseUrl : Eos.BaseUrl
-    , forms : Forms
-    , output : Dict Forms.Id (Result Eos.Error Value)
+    , docs : Dict String Documentation
+    , query : String
+    , theme : Style.Theme
+    , eoscResult : RemoteData Eosc.Error Value
     }
 
 
 emptyModel : Model
 emptyModel =
     { route = Route.Loading
-    , baseUrl = Eos.baseUrl "http://127.0.0.1:8888"
-    , forms = Forms.empty
-    , output = Dict.empty
+    , docs = Dict.empty
+    , query = ""
+    , theme = Style.darkTheme
+    , eoscResult = NotAsked
     }

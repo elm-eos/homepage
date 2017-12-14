@@ -1,52 +1,113 @@
 module Style exposing (..)
 
 import Css exposing (..)
-import Html
-import Html.Attributes as Html
-import Svg
-import Svg.Attributes as Svg
+import Html.Styled exposing (Html)
 
 
-type CssClass
-    = Container
-    | Logo
-    | Sidebar
-    | Content
+type alias Theme =
+    { backgroundColor : Color
+    , foregroundColor : Color
+    , borderColor : Color
+    , fontFamilies : List String
+    , fontSizeRoot : Px
+    , fontSizeScale : Float
+    , gutterX : Float
+    , gutterY : Float
+    }
 
 
-className : class -> String
-className =
-    Basics.toString
+darkTheme : Theme
+darkTheme =
+    { backgroundColor = hex "#34495E"
+    , foregroundColor = hex "#ffffff"
+    , borderColor = rgba 255 255 255 0.5
+    , fontFamilies = [ "sans-serif" ]
+    , fontSizeRoot = px 10
+    , fontSizeScale = 1.414
+    , gutterX = 10
+    , gutterY = 10
+    }
 
 
-class : class -> Html.Attribute msg
-class =
-    Html.class << className
+backgroundColor : Theme -> Style
+backgroundColor theme =
+    Css.backgroundColor theme.backgroundColor
 
 
-classList : List ( class, Bool ) -> Html.Attribute msg
-classList =
-    Html.classList << List.map (\( t, b ) -> ( className t, b ))
+foregroundColor : Theme -> Style
+foregroundColor theme =
+    Css.color theme.foregroundColor
 
 
-classes : List class -> Html.Attribute msg
-classes =
-    classList << List.map (\t -> ( t, True ))
+fontSizeRoot : Theme -> Style
+fontSizeRoot theme =
+    Css.fontSize theme.fontSizeRoot
 
 
-svgClass : class -> Svg.Attribute msg
-svgClass =
-    Svg.class << className
+fontFamilies : Theme -> Style
+fontFamilies theme =
+    Css.fontFamilies theme.fontFamilies
 
 
-svgClassList : List ( class, Bool ) -> Svg.Attribute msg
-svgClassList =
-    Svg.class
-        << String.join " "
-        << List.map (className << Tuple.first)
-        << List.filter Tuple.second
+fontSize : Theme -> Int -> Style
+fontSize theme i =
+    Css.fontSize <| Css.rem <| scale theme.fontSizeScale i
 
 
-svgClasses : List class -> Svg.Attribute msg
-svgClasses =
-    svgClassList << List.map (\t -> ( t, True ))
+gutterX : Theme -> Float -> Px
+gutterX theme i =
+    px <| theme.gutterX * i
+
+
+gutterY : Theme -> Float -> Px
+gutterY theme i =
+    px <| theme.gutterY * i
+
+
+padL : Theme -> Float -> Style
+padL theme i =
+    paddingLeft <| gutterX theme i
+
+
+padR : Theme -> Float -> Style
+padR theme i =
+    paddingRight <| gutterX theme i
+
+
+padT : Theme -> Float -> Style
+padT theme i =
+    paddingTop <| gutterY theme i
+
+
+padB : Theme -> Float -> Style
+padB theme i =
+    paddingBottom <| gutterY theme i
+
+
+padX : Theme -> Float -> Style
+padX theme i =
+    batch
+        [ padL theme i
+        , padR theme i
+        ]
+
+
+padY : Theme -> Float -> Style
+padY theme i =
+    batch
+        [ padT theme i
+        , padB theme i
+        ]
+
+
+pad : Theme -> Float -> Style
+pad theme i =
+    batch
+        [ padX theme i
+        , padY theme i
+        ]
+
+
+scale : Float -> Int -> Float
+scale s i =
+    s ^ Basics.toFloat i

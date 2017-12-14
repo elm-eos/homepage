@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@elm-eos/cli": "../cli"
+    "@elm-eos/cli": "../cli",
+    "eosjs": "^5.1.1"
   }
 }

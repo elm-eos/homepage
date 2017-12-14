@@ -1,0 +1,639 @@
+[
+  {
+    "name": "Eos.Test",
+    "comment": " Docs\n\n@docs account\n@docs accountName\n@docs accountPermission\n@docs block, blockRef\n@docs code, createdAccount\n@docs info, pushedTransaction, pushedTransactionSamples, pushedCode\n@docs info, message, messageSamples, permissionName\n@docs privateKey, publicKey, signature, tableName, tableRows, tableRowsSamples\n@docs transaction, transactionSamples\n\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "account",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "accountName",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "accountPermission",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "block",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "blockRef",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "code",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "createdAccount",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "info",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "message",
+        "comment": " ",
+        "type": "String -> Fuzz.Fuzzer thing -> (thing -> Json.Encode.Value) -> Json.Decode.Decoder thing -> Test.Test"
+      },
+      {
+        "name": "messageSamples",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "permissionName",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "privateKey",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "publicKey",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "pushedCode",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "pushedTransaction",
+        "comment": " ",
+        "type": "String -> Fuzz.Fuzzer thing -> (thing -> Json.Encode.Value) -> Json.Decode.Decoder thing -> Test.Test"
+      },
+      {
+        "name": "pushedTransactionSamples",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "signature",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "tableName",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "tableRows",
+        "comment": " ",
+        "type": "String -> Fuzz.Fuzzer thing -> (thing -> Json.Encode.Value) -> Json.Decode.Decoder thing -> Test.Test"
+      },
+      {
+        "name": "tableRowsSamples",
+        "comment": " ",
+        "type": "Test.Test"
+      },
+      {
+        "name": "transaction",
+        "comment": " ",
+        "type": "String -> Fuzz.Fuzzer thing -> (thing -> Json.Encode.Value) -> Json.Decode.Decoder thing -> Test.Test"
+      },
+      {
+        "name": "transactionSamples",
+        "comment": " ",
+        "type": "Test.Test"
+      }
+    ],
+    "generated-with-elm-version": "0.18.0"
+  },
+  {
+    "name": "Eos.Fuzz",
+    "comment": " Docs\n\n@docs accountName, account, createdAccount, code, info\n@docs accountPermission\n@docs message\n@docs permissionName\n@docs tableName, tableRows\n@docs privateKey\n@docs publicKey\n@docs signature, transaction\n@docs blockRef, block, pushedTransaction, pushedCode\n\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "account",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.Account"
+      },
+      {
+        "name": "accountName",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.AccountName"
+      },
+      {
+        "name": "accountPermission",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.AccountPermission"
+      },
+      {
+        "name": "block",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.Block"
+      },
+      {
+        "name": "blockRef",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.BlockRef"
+      },
+      {
+        "name": "code",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.Code"
+      },
+      {
+        "name": "createdAccount",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.CreatedAccount"
+      },
+      {
+        "name": "info",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.Info"
+      },
+      {
+        "name": "message",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer data -> Fuzz.Fuzzer (Eos.Message data)"
+      },
+      {
+        "name": "permissionName",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.PermissionName"
+      },
+      {
+        "name": "privateKey",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.PrivateKey"
+      },
+      {
+        "name": "publicKey",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.PublicKey"
+      },
+      {
+        "name": "pushedCode",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.PushedCode"
+      },
+      {
+        "name": "pushedTransaction",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer data -> Fuzz.Fuzzer (Eos.PushedTransaction data)"
+      },
+      {
+        "name": "signature",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.Signature"
+      },
+      {
+        "name": "tableName",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer Eos.TableName"
+      },
+      {
+        "name": "tableRows",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer row -> Fuzz.Fuzzer (Eos.TableRows row)"
+      },
+      {
+        "name": "transaction",
+        "comment": " ",
+        "type": "Fuzz.Fuzzer data -> Fuzz.Fuzzer (Eos.Transaction data)"
+      }
+    ],
+    "generated-with-elm-version": "0.18.0"
+  },
+  {
+    "name": "Eos.Encode",
+    "comment": " Docs\n\n@docs accountName, account, createdAccount, code, info\n@docs accountPermission\n@docs message\n@docs permissionName\n@docs tableName, tableRows\n@docs privateKey\n@docs publicKey\n@docs signature\n@docs blockRef, block\n@docs transaction\n@docs pushedCode, pushedTransaction\n\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "account",
+        "comment": " ",
+        "type": "Eos.Account -> Json.Encode.Value"
+      },
+      {
+        "name": "accountName",
+        "comment": " ",
+        "type": "Eos.AccountName -> Json.Encode.Value"
+      },
+      {
+        "name": "accountPermission",
+        "comment": " ",
+        "type": "Eos.AccountPermission -> Json.Encode.Value"
+      },
+      {
+        "name": "block",
+        "comment": " ",
+        "type": "Eos.Block -> Json.Encode.Value"
+      },
+      {
+        "name": "blockRef",
+        "comment": " ",
+        "type": "Eos.BlockRef -> Json.Encode.Value"
+      },
+      {
+        "name": "code",
+        "comment": " ",
+        "type": "Eos.Code -> Json.Encode.Value"
+      },
+      {
+        "name": "createdAccount",
+        "comment": " ",
+        "type": "Eos.CreatedAccount -> Json.Encode.Value"
+      },
+      {
+        "name": "info",
+        "comment": " ",
+        "type": "Eos.Info -> Json.Encode.Value"
+      },
+      {
+        "name": "message",
+        "comment": " ",
+        "type": "(data -> Json.Encode.Value) -> Eos.Message data -> Json.Encode.Value"
+      },
+      {
+        "name": "permissionName",
+        "comment": " ",
+        "type": "Eos.PermissionName -> Json.Encode.Value"
+      },
+      {
+        "name": "privateKey",
+        "comment": " ",
+        "type": "Eos.PrivateKey -> Json.Encode.Value"
+      },
+      {
+        "name": "publicKey",
+        "comment": " ",
+        "type": "Eos.PublicKey -> Json.Encode.Value"
+      },
+      {
+        "name": "pushedCode",
+        "comment": " ",
+        "type": "Eos.PushedCode -> Json.Encode.Value"
+      },
+      {
+        "name": "pushedTransaction",
+        "comment": " ",
+        "type": "(msgData -> Json.Encode.Value) -> Eos.PushedTransaction msgData -> Json.Encode.Value"
+      },
+      {
+        "name": "signature",
+        "comment": " ",
+        "type": "Eos.Signature -> Json.Encode.Value"
+      },
+      {
+        "name": "tableName",
+        "comment": " ",
+        "type": "Eos.TableName -> Json.Encode.Value"
+      },
+      {
+        "name": "tableRows",
+        "comment": " ",
+        "type": "(row -> Json.Encode.Value) -> Eos.TableRows row -> Json.Encode.Value"
+      },
+      {
+        "name": "transaction",
+        "comment": " ",
+        "type": "(msgData -> Json.Encode.Value) -> Eos.Transaction msgData -> Json.Encode.Value"
+      }
+    ],
+    "generated-with-elm-version": "0.18.0"
+  },
+  {
+    "name": "Eos.Decode",
+    "comment": " Docs\n\n@docs account\n@docs accountName\n@docs accountPermission\n@docs block\n@docs blockRef\n@docs code\n@docs createdAccount\n@docs info\n@docs message\n@docs permissionName\n@docs privateKey\n@docs publicKey\n@docs pushedCode\n@docs pushedTransaction\n@docs signature\n@docs tableName\n@docs tableRows\n@docs transaction\n\n",
+    "aliases": [],
+    "types": [],
+    "values": [
+      {
+        "name": "account",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.Account"
+      },
+      {
+        "name": "accountName",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.AccountName"
+      },
+      {
+        "name": "accountPermission",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.AccountPermission"
+      },
+      {
+        "name": "block",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.Block"
+      },
+      {
+        "name": "blockRef",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.BlockRef"
+      },
+      {
+        "name": "code",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.Code"
+      },
+      {
+        "name": "createdAccount",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.CreatedAccount"
+      },
+      {
+        "name": "info",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.Info"
+      },
+      {
+        "name": "message",
+        "comment": " ",
+        "type": "Json.Decode.Decoder data -> Json.Decode.Decoder (Eos.Message data)"
+      },
+      {
+        "name": "permissionName",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.PermissionName"
+      },
+      {
+        "name": "privateKey",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.PrivateKey"
+      },
+      {
+        "name": "publicKey",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.PublicKey"
+      },
+      {
+        "name": "pushedCode",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.PushedCode"
+      },
+      {
+        "name": "pushedTransaction",
+        "comment": " ",
+        "type": "Json.Decode.Decoder messageData -> Json.Decode.Decoder (Eos.PushedTransaction messageData)"
+      },
+      {
+        "name": "signature",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.Signature"
+      },
+      {
+        "name": "tableName",
+        "comment": " ",
+        "type": "Json.Decode.Decoder Eos.TableName"
+      },
+      {
+        "name": "tableRows",
+        "comment": " ",
+        "type": "Json.Decode.Decoder row -> Json.Decode.Decoder (Eos.TableRows row)"
+      },
+      {
+        "name": "transaction",
+        "comment": " ",
+        "type": "Json.Decode.Decoder messageData -> Json.Decode.Decoder (Eos.Transaction messageData)"
+      }
+    ],
+    "generated-with-elm-version": "0.18.0"
+  },
+  {
+    "name": "Eos",
+    "comment": "\n\n\n# Basics\n\n@docs BaseUrl, baseUrl\n@docs AccountName, accountNameToString, accountName\n@docs Block, BlockRef, blockId, blockNum, Info\n\n\n# Keys\n\n@docs PublicKey, publicKeyToString, publicKey\n@docs PrivateKey, privateKeyToString, privateKey\n\n\n# Signatures\n\n@docs Signature, signatureToString, signature\n\n\n# Accounts and Permissions\n\n@docs Account\n@docs CreatedAccount\n@docs AccountPermission\n@docs PermissionName, permissionNameToString, permissionName\n\n\n# Tables\n\n@docs TableName, tableName, tableNameToString\n@docs TableRows\n\n\n# Transactions\n\n@docs Transaction, Message, PushedTransaction\n\n\n# Code\n\n@docs Code, PushedCode\n\n",
+    "aliases": [
+      {
+        "name": "Account",
+        "comment": " ",
+        "args": [],
+        "type": "{ accountName : Eos.AccountName , eosBalance : String , stakedBalance : String , unstakingBalance : String , lastUnstakingTime : Date.Date }"
+      },
+      {
+        "name": "AccountPermission",
+        "comment": " ",
+        "args": [],
+        "type": "{ account : Eos.AccountName, permission : Eos.PermissionName }"
+      },
+      {
+        "name": "BaseUrl",
+        "comment": " ",
+        "args": [],
+        "type": "Erl.Url"
+      },
+      {
+        "name": "Block",
+        "comment": " ",
+        "args": [],
+        "type": "{ previous : String , timestamp : Date.Date , transactionMerkleRoot : String , producer : Eos.AccountName , producerSignature : String , id : String , blockNum : Int , refBlockPrefix : Int }"
+      },
+      {
+        "name": "Code",
+        "comment": " ",
+        "args": [],
+        "type": "{ accountName : Eos.AccountName, codeHash : String, wast : String }"
+      },
+      {
+        "name": "CreatedAccount",
+        "comment": " ",
+        "args": [],
+        "type": "{ creator : Eos.AccountName , name : Eos.AccountName , deposit : String }"
+      },
+      {
+        "name": "Info",
+        "comment": " ",
+        "args": [],
+        "type": "{ serverVersion : String , headBlockNum : Int , lastIrreversibleBlockNum : Int , headBlockId : String , headBlockTime : Date.Date , headBlockProducer : Eos.AccountName , recentSlots : String , participationRate : String }"
+      },
+      {
+        "name": "Message",
+        "comment": " ",
+        "args": [
+          "data"
+        ],
+        "type": "{ code : Eos.AccountName , type_ : String , authorization : List Eos.AccountPermission , data : data }"
+      },
+      {
+        "name": "PushedCode",
+        "comment": " ",
+        "args": [],
+        "type": "{ account : Eos.AccountName , vmType : Int , vmVersion : Int , code : String }"
+      },
+      {
+        "name": "PushedTransaction",
+        "comment": " ",
+        "args": [
+          "data"
+        ],
+        "type": "{ transactionId : String, transaction : Eos.Transaction data }"
+      },
+      {
+        "name": "TableRows",
+        "comment": " ",
+        "args": [
+          "row"
+        ],
+        "type": "{ rows : List row, more : Bool }"
+      },
+      {
+        "name": "Transaction",
+        "comment": " ",
+        "args": [
+          "data"
+        ],
+        "type": "{ refBlockNum : Int , refBlockPrefix : Int , expiration : Date.Date , scope : List Eos.AccountName , messages : List (Eos.Message data) , signatures : List String }"
+      }
+    ],
+    "types": [
+      {
+        "name": "AccountName",
+        "comment": " ",
+        "args": [],
+        "cases": []
+      },
+      {
+        "name": "BlockRef",
+        "comment": " ",
+        "args": [],
+        "cases": [
+          [
+            "BlockNum",
+            [
+              "Int"
+            ]
+          ],
+          [
+            "BlockId",
+            [
+              "String"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "PermissionName",
+        "comment": " ",
+        "args": [],
+        "cases": []
+      },
+      {
+        "name": "PrivateKey",
+        "comment": " ",
+        "args": [],
+        "cases": []
+      },
+      {
+        "name": "PublicKey",
+        "comment": " ",
+        "args": [],
+        "cases": []
+      },
+      {
+        "name": "Signature",
+        "comment": " ",
+        "args": [],
+        "cases": []
+      },
+      {
+        "name": "TableName",
+        "comment": " ",
+        "args": [],
+        "cases": []
+      }
+    ],
+    "values": [
+      {
+        "name": "accountName",
+        "comment": " ",
+        "type": "String -> Eos.AccountName"
+      },
+      {
+        "name": "accountNameToString",
+        "comment": " ",
+        "type": "Eos.AccountName -> String"
+      },
+      {
+        "name": "baseUrl",
+        "comment": " ",
+        "type": "String -> Eos.BaseUrl"
+      },
+      {
+        "name": "blockId",
+        "comment": " ",
+        "type": "String -> Eos.BlockRef"
+      },
+      {
+        "name": "blockNum",
+        "comment": " ",
+        "type": "Int -> Eos.BlockRef"
+      },
+      {
+        "name": "permissionName",
+        "comment": " ",
+        "type": "String -> Eos.PermissionName"
+      },
+      {
+        "name": "permissionNameToString",
+        "comment": " ",
+        "type": "Eos.PermissionName -> String"
+      },
+      {
+        "name": "privateKey",
+        "comment": " ",
+        "type": "String -> Eos.PrivateKey"
+      },
+      {
+        "name": "privateKeyToString",
+        "comment": " ",
+        "type": "Eos.PrivateKey -> String"
+      },
+      {
+        "name": "publicKey",
+        "comment": " ",
+        "type": "String -> Eos.PublicKey"
+      },
+      {
+        "name": "publicKeyToString",
+        "comment": " ",
+        "type": "Eos.PublicKey -> String"
+      },
+      {
+        "name": "signature",
+        "comment": " ",
+        "type": "String -> Eos.Signature"
+      },
+      {
+        "name": "signatureToString",
+        "comment": " ",
+        "type": "Eos.Signature -> String"
+      },
+      {
+        "name": "tableName",
+        "comment": " ",
+        "type": "String -> Eos.TableName"
+      },
+      {
+        "name": "tableNameToString",
+        "comment": " ",
+        "type": "Eos.TableName -> String"
+      }
+    ],
+    "generated-with-elm-version": "0.18.0"
+  }
+]
